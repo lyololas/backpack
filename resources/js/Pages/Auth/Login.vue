@@ -1,3 +1,88 @@
+<template>
+    <GuestLayout>
+        <Head title="Log in"/>
+
+        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+            {{ status }}
+        </div>
+
+        <form @submit.prevent="submit" class="space-y-4">
+            <div>
+                <div class="flex items-center justify-between">
+                    <h1 :class="{ 'font-bold': !form.isEnteringPassword }" class="text-4xl py-2">
+                        {{ form.isEnteringPassword ? 'Введите пароль' : 'Добро пожаловать' }}
+                    </h1>
+                    <button v-if="form.isEnteringPassword" @click="goBack" class="text-sm text-gray-600">Назад</button>
+                </div>
+
+                <div>
+                    <span v-if="!form.isEnteringPassword" class="py-2">
+                        Войдите
+                    </span>
+                    <span v-if="form.isEnteringPassword" class="py-2">
+                        Чтобы войти, вам необходимо ввести пароль
+                    </span>
+                </div>
+
+                <div v-if="!form.isEnteringPassword" class="py-4">
+                    <InputLabel for="email" value="Почта"/>
+
+                    <TextInput
+                        id="email"
+                        type="email"
+                        class="w-full"
+                        v-model="form.email"
+                        required
+                        autofocus
+                        autocomplete="username"
+                    />
+
+                    <InputError class="mt-2" :message="form.errors.email"/>
+                </div>
+
+                <div v-if="form.isEnteringPassword" class="py-4">
+                    <InputLabel for="password" value="Password"/>
+
+                    <TextInput
+                        id="password"
+                        type="password"
+                        class="w-full"
+                        v-model="form.password"
+                        required
+                        autocomplete="current-password"
+                    />
+
+                    <InputError class="mt-2" :message="form.errors.password"/>
+                </div>
+
+                <div class="py-4">
+                    <label class="flex items-center">
+                        <Checkbox name="remember" v-model:checked="form.remember"/>
+                        <span class="ms-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                </div>
+
+                <div class="mt-5 flex">
+                    <PrimaryButton
+                        @click="submit"
+                        :class="{ 'opacity-25': form.processing }"
+                        :disabled="form.processing"
+                    >
+                        {{ form.isEnteringPassword ? 'Войти' : 'Продолжить с почтой' }}
+                    </PrimaryButton>
+                </div>
+                <div class="border-b-2 border-[#C6C6C6] relative py-4">
+                    <div class="bg-white absolute left-1/2 transform -translate-x-1/2 px-4 py-1">
+                        <h1>или</h1>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <h1 class="text-sm text-gray-400 mt-5">Регистрируясь вы принимаете условия пользовательского соглашения и политику безопасности нашего сайта</h1>
+    </GuestLayout>
+</template>
+
+
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
@@ -20,81 +105,22 @@ const form = useForm({
     email: '',
     password: '',
     remember: false,
+    isEnteringPassword: false,
 });
 
 const submit = () => {
-    form.post(route('login'), {
-        onFinish: () => form.reset('password'),
-    });
+    if (form.isEnteringPassword) {
+        form.post(route('login'), {
+            onFinish: () => {
+                form.reset('password');
+            },
+        });
+    } else {
+        form.isEnteringPassword = true;
+    }
+};
+
+const goBack = () => {
+    form.isEnteringPassword = false;
 };
 </script>
-
-<template>
-    <GuestLayout>
-        <Head title="Log in" />
-
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4 block">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
-                    >
-                </label>
-            </div>
-
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
-</template>
