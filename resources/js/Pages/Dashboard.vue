@@ -21,7 +21,39 @@ import { Head } from '@inertiajs/vue3';
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                        You're logged in!
+                        <div class="p-4 bg-[#F3F3F3] flex grid grid-cols-5">
+                            <h1>
+                                ТИП
+                            </h1>
+                            <h1>
+                                СРОКИ
+                            </h1>
+                            <h1>
+                                СТОИМОСТЬ
+                            </h1>
+                            <h1>
+                                  ПЛОЩАДЬ
+                            </h1>
+                            <h1>
+                                ДАТА
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="p-6 text-gray-900">
+                        <div v-for="project in $page.props.projects" :key="project.id">
+
+<!-- Display project details -->
+
+<h1>{{ project.type }}</h1>
+
+
+<h1>{{ project.cost }}</h1>
+
+<h1>{{ project.area }}</h1>
+
+<h1>{{ project.date }}</h1>
+
+</div>
                     </div>
                 </div>
             </div>
