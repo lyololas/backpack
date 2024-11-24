@@ -35,7 +35,7 @@
   
       <form @submit.prevent="proceedToNextStep">
   
-        <!-- Step 1: Email Input -->
+
         <div v-if="currentStep.step === 1" class="mt-4">
           <InputLabel for="email" value="Почта" />
           <TextInput
@@ -48,8 +48,7 @@
           />
           <InputError class="mt-2" :message="form.errors.email" />
         </div>
-  
-        <!-- Step 2: Name Input -->
+
         <div v-if="currentStep.step === 2" class="mt-4">
           <InputLabel for="name" value="Имя" />
           <TextInput
@@ -64,7 +63,7 @@
           <InputError class="mt-2" :message="form.errors.name" />
         </div>
   
-        <!-- Step 3: Password Input -->
+
         <div v-if="currentStep.step === 3" class="mt-4">
           <InputLabel for="password" value="Пароль" />
           <TextInput
@@ -91,7 +90,7 @@
           <InputError class="mt-2" :message="form.errors.password_confirmation" />
         </div>
   
-        <!-- Button to proceed -->
+
         <div class="mt-4">
           <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
             {{ currentStep.step === 3 ? 'Зарегистрироваться' : 'Далее' }}
@@ -132,31 +131,31 @@
     step: 1,
   });
   
-  // Function to proceed to the next step
+
   const proceedToNextStep = () => {
     if (currentStep.step === 1) {
       if (form.email.trim() !== '') {
-        currentStep.step = 2; // Move to the next step
+        currentStep.step = 2; 
       }
     } else if (currentStep.step === 2) {
       if (form.name.trim() !== '') {
-        currentStep.step = 3; // Move to the next step
+        currentStep.step = 3; 
       }
     } else if (currentStep.step === 3) {
       if (form.password !== '' && form.password_confirmation !== '' && form.password === form.password_confirmation) {
-        submit(); // Submit the form if all validations pass
+        submit(); 
       }
     }
   };
   
-  // Function to go back to the previous step
+
   const goBack = () => {
     if (currentStep.step > 1) {
-      currentStep.step--; // Decrease step to go back
+      currentStep.step--; 
     }
   };
   
-  // Function to submit the form
+
   const submit = () => {
     form.post(route('register'), {
       onFinish: () => form.reset('password', 'password_confirmation'),

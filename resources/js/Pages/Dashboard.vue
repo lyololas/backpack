@@ -5,17 +5,17 @@ import Modal from '@/Components/Modal.vue';
 import { Head } from '@inertiajs/vue3';
 
 const modalOpen = ref(false);
-const selectedProject = ref(null); // Reactive variable to hold the selected project
+const selectedProject = ref(null); 
 
 const formatCreatedAt = (createdAt) => {
   const date = new Date(createdAt);
   return date.toLocaleString();
 };
 
-// Update showModal to accept project data
+
 const showModal = (project) => {
-  selectedProject.value = project; // Set the selected project
-  modalOpen.value = true; // Open the modal
+  selectedProject.value = project; 
+  modalOpen.value = true; 
 };
 </script>
 
@@ -42,7 +42,7 @@ const showModal = (project) => {
                     <div class="p-6 text-gray-900 space-y-5">
                         <div v-for="project in $page.props.projects" :key="project.id" 
                              class="flex grid grid-cols-5" 
-                             @click="showModal(project)"> <!-- Pass the project to showModal -->
+                             @click="showModal(project)"> 
                             <h1>{{ project.type === 'idea' ? 'Идея' : 'Проект' }}</h1>
                             <h1>{{ project.title }}</h1>
                             <h1>{{ project.description }}</h1>
@@ -60,5 +60,5 @@ const showModal = (project) => {
         </div>
         
     </AuthenticatedLayout>
-    <Modal :isOpen="modalOpen" :project="selectedProject" @close="modalOpen = false" /> <!-- Pass the selected project -->
+    <Modal :isOpen="modalOpen" :project="selectedProject" @close="modalOpen = false" /> 
 </template>

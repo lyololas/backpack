@@ -1,9 +1,9 @@
 <template>
     <div v-if="isOpen" class="modal">
-        <!-- Overlay behind the modal -->
+
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
         
-        <!-- Modal content -->
+
         <div class="fixed top-0 right-0 bottom-0  h-screen flex items-center justify-center p-4 text-center w-2/5">
             <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-full h-full">
                 <div class="bg-white px-8 py-6 w-full h-full"> 
@@ -72,7 +72,7 @@
 
 <style scoped>
 .modal {
-    z-index: 50; /* Ensure the modal is above other content */
+    z-index: 50; 
 }
 </style>
 
